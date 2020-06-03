@@ -1,3 +1,5 @@
+"use strict";
+
 const server = require("./server");
 
 const runningServer = server.listen(process.env.PORT || 3000, () => {

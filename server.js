@@ -1,3 +1,5 @@
+"use strict";
+
 const { createWriteStream } = require("fs");
 const path = require("path");
 const express = require("express");
@@ -14,6 +16,8 @@ const accessLogStream = createWriteStream(
 const app = express();
 app.use(express.json());
 app.use(morgan("combined", { stream: accessLogStream }));
+
+app.use(require("./routes"));
 
 // Catch 404 and forward to error handler
 app.use((req, res, next) => {
