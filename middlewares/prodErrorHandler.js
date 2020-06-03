@@ -1,13 +1,13 @@
-function errorHandler() {
+function errorHandler () {
   return (err, req, res, next) => {
-    res.status(err.status || 500);
+    res.status(err.status || 500)
     res.json({
       errors: {
         message: err.message,
-        error: {},
-      },
-    });
-  };
+        error: {}
+      }
+    })
+  }
 }
 
-module.exports = errorHandler;
+module.exports = errorHandler
