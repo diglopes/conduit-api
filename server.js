@@ -12,6 +12,8 @@ const {
   prodErrorHandler
 } = require('./middlewares')
 
+require('./models/user')
+
 const isProduction = process.env.NODE_ENV === 'production'
 
 const accessLogStream = createWriteStream(
