@@ -11,12 +11,13 @@
     }
   },
   "scripts": {
-    "dev": "node app.js"
+    "dev": "nodemon app.js"
   },
   "devDependencies": {
     "errorhandler": "^1.5.1",
     "git-commit-msg-linter": "^2.4.2",
-    "husky": "^4.2.5"
+    "husky": "^4.2.5",
+    "nodemon": "^2.0.4"
   },
   "dependencies": {
     "express": "^4.17.1",
