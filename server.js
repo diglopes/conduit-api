@@ -5,7 +5,12 @@ const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const errorHandler = require("errorhandler");
-const { cors } = require("./middlewares");
+const {
+  cors,
+  notFound,
+  devErrorHandler,
+  prodErrorHandler,
+} = require("./middlewares");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -22,38 +27,15 @@ app.use(morgan("combined", { stream: accessLogStream }));
 app.use(require("./routes"));
 
 // Catch 404 and forward to error handler
-app.use((req, res, next) => {
-  const err = new Error("Not Found");
-  err.status = 404;
-  next(err);
-});
+app.use(notFound());
 
 // Handling error on development mode
 if (!isProduction) {
   app.use(errorHandler());
-
-  app.use((err, req, res, next) => {
-    console.log(err.stack);
-    res.status(err.status || 500);
-
-    res.json({
-      errors: {
-        message: err.message,
-        error: err,
-      },
-    });
-  });
+  app.use(devErrorHandler());
 }
 
 // Handling error on production mode
-app.use((err, req, res, next) => {
-  res.status(err.status || 500);
-  res.json({
-    errors: {
-      message: err.message,
-      error: {},
-    },
-  });
-});
+app.use(prodErrorHandler());
 
 module.exports = app;
