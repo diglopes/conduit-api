@@ -5,6 +5,7 @@ const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const errorHandler = require("errorhandler");
+const { cors } = require("./middlewares");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -15,6 +16,7 @@ const accessLogStream = createWriteStream(
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 app.use(morgan("combined", { stream: accessLogStream }));
 
 app.use(require("./routes"));
