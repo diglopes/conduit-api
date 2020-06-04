@@ -1,6 +1,5 @@
 const usersController = require('./users.controller')
 const database = require('../../../config/database')
-const UserModel = require('./user.model')
 
 const USER_MOCK = {
   username: 'anyUsernameMock',
@@ -14,7 +13,6 @@ describe('Users controller', () => {
   })
 
   afterAll(async () => {
-    await UserModel.deleteOne({ email: USER_MOCK.email })
     await database.disconnect()
   })
 

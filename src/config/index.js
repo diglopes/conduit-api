@@ -1,4 +1,4 @@
 module.exports = {
-  mongodbUri: process.env.MONGODB_URI || 'mongodb://localhost/conduit',
+  mongodbUri: process.env.MONGO_URL,
   jwtsecret: process.env.JWT_SECRET || 'secret'
 }
