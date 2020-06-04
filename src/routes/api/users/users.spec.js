@@ -28,7 +28,16 @@ describe('usersController::create', () => {
     const httpRequestDiferentEmail = Object.assign({ body: { user: { email: 'difentEmail@email.com' } } }, httpRequest)
     await usersController.create(httpRequest)
     const user = await usersController.create(httpRequestDiferentEmail)
-    console.log({ httpRequestDiferentEmail })
+    expect(user).toHaveProperty('error')
+    expect(user.error.message).toMatch(/duplicate/gi)
+  })
+
+  it('should throw if email is already registered', async () => {
+    const httpRequest = USERS_MOCK.httpRequest.newUser
+    const httpRequestDiferentUsername =
+      Object.assign({ body: { user: { username: 'diferentUsername' } } }, httpRequest)
+    await usersController.create(httpRequest)
+    const user = await usersController.create(httpRequestDiferentUsername)
     expect(user).toHaveProperty('error')
     expect(user.error.message).toMatch(/duplicate/gi)
   })
