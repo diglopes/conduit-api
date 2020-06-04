@@ -15,7 +15,7 @@
     "*.js": "standard"
   },
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon src/app.js"
   },
   "devDependencies": {
     "errorhandler": "^1.5.1",

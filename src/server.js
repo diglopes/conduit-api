@@ -18,7 +18,7 @@ require('./config/validationLocale')
 const isProduction = process.env.NODE_ENV === 'production'
 
 const accessLogStream = createWriteStream(
-  path.join(__dirname, 'logs', 'access.log'),
+  path.join(__dirname, '..', 'logs', 'access.log'),
   { flags: 'a' }
 )
 
