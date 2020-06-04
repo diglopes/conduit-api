@@ -1,15 +1,15 @@
 const usersController = require('./users.controller')
 const database = require('../../../config/database')
+const UserModel = require('./user.model')
+const USERS_MOCK = require('../../../../mocks/USERS')
 
-const USER_MOCK = {
-  username: 'anyUsernameMock',
-  password: 'anyPasswordMock',
-  email: 'anyEmailMock@email.com'
-}
-
-describe('Users controller', () => {
+describe('usersController::create', () => {
   beforeAll(async () => {
     await database.connect()
+  })
+
+  afterEach(async () => {
+    await UserModel.deleteMany({})
   })
 
   afterAll(async () => {
@@ -17,14 +17,19 @@ describe('Users controller', () => {
   })
 
   it('should create a user', async () => {
-    const httpRequest = {
-      body: {
-        user: USER_MOCK
-      }
-    }
+    const httpRequest = USERS_MOCK.httpRequest.newUser
     const user = await usersController.create(httpRequest)
+    expect(user.data.username).toBe(httpRequest.body.user.username)
+    expect(user.data.email).toBe(httpRequest.body.user.email)
+  })
 
-    expect(user.data.username).toBe(USER_MOCK.username)
-    expect(user.data.email).toBe(USER_MOCK.email)
+  it('should throw if username is already registered', async () => {
+    const httpRequest = USERS_MOCK.httpRequest.newUser
+    const httpRequestDiferentEmail = Object.assign({ body: { user: { email: 'difentEmail@email.com' } } }, httpRequest)
+    await usersController.create(httpRequest)
+    const user = await usersController.create(httpRequestDiferentEmail)
+    console.log({ httpRequestDiferentEmail })
+    expect(user).toHaveProperty('error')
+    expect(user.error.message).toMatch(/duplicate/gi)
   })
 })
