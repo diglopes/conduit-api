@@ -12,7 +12,7 @@
     }
   },
   "lint-staged": {
-    "*.js": "standard"
+    "*.js": ["standard --fix", "npm run test:staged"]
   },
   "standard": {
     "env": [
@@ -21,7 +21,8 @@
   },
   "scripts": {
     "dev": "nodemon src/app.js",
-    "test": "jest"
+    "test": "jest --passWithNoTests --runInBand",
+    "test:staged": "npm test -- --findRelatedTests --silent"
   },
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.1.5",
