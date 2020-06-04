@@ -12,7 +12,10 @@
     }
   },
   "lint-staged": {
-    "*.js": ["standard --fix", "npm run test:staged"]
+    "*.js": [
+      "standard --fix",
+      "npm run test:staged"
+    ]
   },
   "standard": {
     "env": [
@@ -20,7 +23,7 @@
     ]
   },
   "scripts": {
-    "dev": "nodemon src/app.js",
+    "dev": "cross-env NODE_ENV=development nodemon src/app.js",
     "test": "jest --passWithNoTests --runInBand",
     "test:staged": "npm test -- --findRelatedTests --silent"
   },
@@ -35,6 +38,8 @@
     "standard": "^14.3.4"
   },
   "dependencies": {
+    "cross-env": "^7.0.2",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.17",

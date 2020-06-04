@@ -12,7 +12,6 @@ const {
   prodErrorHandler
 } = require('./middlewares')
 
-require('./models/user')
 require('./config/validationLocale')
 
 const isProduction = process.env.NODE_ENV === 'production'
