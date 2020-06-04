@@ -1,12 +1,11 @@
 const mongoose = require('mongoose')
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
-const secret = require('../config').jwtsecret
+const secret = require('../../../config').jwtsecret
 
 const UserSchema = new mongoose.Schema({
   username: {
     type: String,
-    lowercase: true,
     required: [true, 'can\'t be blank'],
     match: [/^[a-zA-Z0-9]+$/, 'is invalid'],
     index: true,
@@ -14,7 +13,6 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    lowercase: true,
     required: [true, 'can\'t be blank'],
     match: [/\S+@\S+\.\S+/, 'is invalid'],
     index: true,
@@ -57,4 +55,4 @@ UserSchema.methods.toAuthJSON = function () {
   }
 }
 
-mongoose.model('User', UserSchema)
+module.exports = mongoose.model('User', UserSchema)

@@ -1,16 +1,21 @@
-const UserModel = require('mongoose').model('User')
+const UserModel = require('./user.model')
 
-async function create (req, res, next) {
+async function create (httpRequest) {
   try {
-    const { user } = req.body
+    const { user } = httpRequest.body
     const newUser = new UserModel()
     newUser.username = user.username
     newUser.email = user.email
     newUser.setPassword(user.password)
     await newUser.save()
-    return res.status(201).json({ user: newUser.toAuthJSON() })
+    return {
+      status: 201,
+      data: newUser.toAuthJSON()
+    }
   } catch (error) {
-    next(error)
+    return {
+      error
+    }
   }
 }
 
