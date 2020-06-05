@@ -42,3 +42,26 @@ describe('usersController::create', () => {
     expect(user.error.message).toMatch(/duplicate/gi)
   })
 })
+
+describe('usersController:login', () => {
+  beforeAll(async () => {
+    await database.connect()
+  })
+
+  afterEach(async () => {
+    await UserModel.deleteMany({})
+  })
+
+  afterAll(async () => {
+    await database.disconnect()
+  })
+
+  it('should authenticate when valid credentials are provided', async () => {
+    const httpRequest = USERS_MOCK.httpRequest.newUser
+    await usersController.create(httpRequest)
+    const httpResponse = await usersController.login(httpRequest)
+    const props = ['token', 'email', 'username']
+    props.forEach(prop => expect(httpResponse.user).toHaveProperty(prop))
+    expect(httpResponse.user.email).toBe(httpRequest.body.user.email)
+  })
+})

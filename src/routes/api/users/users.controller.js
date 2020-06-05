@@ -1,4 +1,5 @@
 const UserModel = require('./user.model')
+const userErrors = require('./user.errors')
 
 async function create (httpRequest) {
   try {
@@ -19,6 +20,21 @@ async function create (httpRequest) {
   }
 }
 
+async function login (httpRequest) {
+  try {
+    const { user } = httpRequest.body
+    const userFound = await UserModel.findOne({ email: user.email })
+    const passwordMatches = userFound && await userFound.validatePassword(user.password)
+    if (!userFound || !passwordMatches) userErrors.invalidCredentials()
+    return { user: userFound.toAuthJSON() }
+  } catch (error) {
+    return {
+      error
+    }
+  }
+}
+
 module.exports = {
-  create
+  create,
+  login
 }
