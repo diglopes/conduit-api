@@ -43,7 +43,7 @@ describe('usersController::create', () => {
   })
 })
 
-describe('usersController:login', () => {
+describe('usersController::login', () => {
   beforeAll(async () => {
     await database.connect()
   })
@@ -56,12 +56,21 @@ describe('usersController:login', () => {
     await database.disconnect()
   })
 
-  it('should authenticate when valid credentials are provided', async () => {
+  it('should return a user when valid credentials are provided', async () => {
     const httpRequest = USERS_MOCK.httpRequest.newUser
     await usersController.create(httpRequest)
     const httpResponse = await usersController.login(httpRequest)
     const props = ['token', 'email', 'username']
     props.forEach(prop => expect(httpResponse.user).toHaveProperty(prop))
     expect(httpResponse.user.email).toBe(httpRequest.body.user.email)
+  })
+
+  it('should return a error with status 422 when invalid credentials are provided', async () => {
+    const httpRequest = USERS_MOCK.httpRequest.newUser
+    await usersController.create(httpRequest)
+    httpRequest.body.user.password = 'invalid_password'
+    const httpResponse = await usersController.login(httpRequest)
+    expect(httpResponse).toHaveProperty('error')
+    expect(httpResponse.error.status).toBe(422)
   })
 })
